@@ -1,5 +1,8 @@
 # Biostats-in-R
 (still in progress of starting... check out my other things)
+
+(another update: by July 31, I will have more content)
+
 A complete biostatistics and data science course in R
 
 ### Installing R
