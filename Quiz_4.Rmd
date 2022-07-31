@@ -1,0 +1,85 @@
+---
+title: "miRcore R camp day 4 quiz"
+author: "Leonardo de Farias"
+date: "2022-07-28"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Make a scatter plot of all miR values from Control_1 and Tumor_1 (Control_1 values on x-axis and Tumor_1 values on y-axis).
+
+``` {r}
+
+plot(
+  smalldata$Control_1, smalldata$Tumor_1
+)
+```
+
+2. Make R use decimal points instead of scientific notation.  
+
+``` {r}
+options(scipen = 0)
+
+```
+
+3. Make a histogram of log2 transformed values for all miRs in Tumor_3 sample.
+
+``` {r}
+hist(smalldata$Tumor_3)
+hist(log2(smalldata$Tumor_3))
+```
+
+``` {r}
+
+boxmiR <- as.matrix(
+  smalldata[c("Tumor_1", "Tumor_5", "Tumor_7", "Control_1", "Control_5", "Control_7")], 
+)
+
+boxplot(log2(boxmiR), col=c("green", "green", "green", "blue", "blue", "blue"))
+
+```
+
+``` {r}
+#heatMat <- smalldata[]
+#pheatmap()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

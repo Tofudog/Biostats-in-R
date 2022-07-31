@@ -1,0 +1,161 @@
+---
+title: "Iteration and Conditional"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Iterations
+Prompt: Let's say I want to type the statement "My favorite number is 1" with 100 different numbers. How do I do this? 
+
+First let's try printing the statement manually: 
+```{r}
+print("My Favorite Number is 1")
+print("My Favorite Number is 2")
+print("My Favorite Number is 3")
+print("My Favorite Number is 4")
+```
+
+I don't know about you, but I'm starting to get a bit bored of copying, pasting and changing the number...let's see if we can utilize the for loop
+
+```{r}
+for (i in 1:10) {
+  print(i)
+}
+```
+
+The first part dictates how many times the loop run for. The variable i starts with a value of 1 and will increase it's value after it finishes the loop.
+
+i is like a temporary variable; it disappears after the for loop is done running
+
+Let's apply this to our printing problem: 
+```{r}
+for (i in 1:10) {
+  print( paste("My Favorite Number is", i, sep="... ") )
+}
+```
+
+### Conditional
+What if I only like even numbers? How can I reprogram the earlier program so only even numbers print? 
+```{r}
+for (i in 1:10) {
+  if ( i%%2 == 0 ) {print(i)}
+  else {print("Odd Corruption... I refuse to print!")}
+}
+```
+
+Example #2, let's make a vector that creates a vector of headers that go like GroupA_1, GroupB_1, GroupA_2, GroupB_2...GroupA_10, GroupB_10
+```{r}
+headers <- vector()
+for (i in 1:10) {
+  headers <-append(headers,
+    paste("GroupA", i, sep="_")
+  )
+  headers <- append(headers,
+    paste("GroupB", i, sep="_")
+  )
+}
+print(headers)
+```
+
+Let's make a vector containing the pvalues from the ttests of smalldata tumors vs. controls: 
+```{r}
+
+```
+
+
+
+
+
+
+
+Your turn: 
+Go to your Group!
+Using small data
+1. Change the smalldata to a matrix.
+```{r}
+#smalldata <- read.table("small_data.txt", ...)
+smalldata <- as.matrix(smalldata)
+```
+
+2. Make an empty data.frame named ttest.
+```{r}
+ttest <- data.frame()
+ttest
+```
+
+3. For the first gene (hint: first row) 
+      1. calculate t.test p-value between expression values all tumor samples (hint: first 10 samples and the 
+         values need to be numeric) and all control samples (change from your earlier task)
+```{r}
+tumor1 <- smalldata[1, 1:10]
+control1 <- smalldata[1, 11:20]
+firstP <- t.test(tumor1, control1)$p.value
+firstP
+```
+         
+      2. If p-value is less than 0.0001, add to the expression values in the ttest (hintt: use rbind 
+         function).
+4. Do the step 3 for the remaining genes (total 19) using a for loop
+```{r}
+pvalues <- c(firstP)
+for (i in 2:20) {
+  tumor_i <- smalldata[i, 1:10]
+  control_i <- smalldata[i, 11:20]
+  pval_i <- t.test(tumor_i, control_i)$p.value
+  if (pval_i < 0.0001) {
+    #ttest <- rbind(ttest, pval_i)
+  }
+  pvalues <- append(pvalues, pval_i)
+}
+ttest
+
+###other way
+#pval = vector()
+#for(i in 1:nrow(smalldataM))
+#{
+#  pval[i] = t.test(smalldataM[i,grep("Control", colnames(smalldataM))],smalldataM[i, grep("Tumor", #colnames(smalldataM))])$p.value
+#}
+#pval
+ttest$expression <- pvalues  #this will not work if ttest is barely initialized
+ttest
+```
+
+5. Add a column for the ratio between means for the tumors and control (tumor_mean/control_mean) (to the ttest dataframe)
+```{r}
+ratio <- vector()
+for (i in 1:nrow(smalldata)) {
+  tumors_i <- smalldata[i, grep("Tumor", colnames(smalldata))]
+  control_i <- smalldata[i, grep("Control", colnames(smalldata))]
+  #ratio <- append(ratio, mean(tumors_i) / mean(control_i) )
+  ttest <- rbind(ttest, mean(tumors_i)/mean(control_i))
+}
+colnames(ttest) <- c("ratio")
+head(ttest)
+```
+
+6. Create a new data frame called updata. Add the data for all the miRs where the tumor mean is HIGHER than the control mean among miR with p<0.0001.
+```{r}
+updata <- data.frame()
+for (i in 1:nrow(ttest)) {
+  if (ttest[i,]$ratio > 1) {
+    updata <- rbind(updata, ttest[i,] )
+  }
+}
+updata
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

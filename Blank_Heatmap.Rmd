@@ -1,0 +1,174 @@
+---
+title: "Blank_Heatmap"
+output: html_document
+date: '2022-07-27'
+---
+---
+title: "Teaching_Heatmap"
+output: html_document
+date: '2022-07-27'
+---
+---
+title: "t_test"
+author: "Inhan Lee"
+date: "7/19/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+slides 1,2
+
+Heatmap and Dendrogram: 
+A heat map is a graphical representation of data where the individual values contained in a matrix are represented as colors.
+
+Heat maps are typically used in molecular biology to represent the level of expression of many genes across a number of comparable samples (e.g. cells in different states, samples from different patients)
+
+A dendrogram is a tree diagram used to illustrate the arrangement of the clusters produced by hierarchical clustering. 
+Dendrograms are often used in computational biology to illustrate the clustering of genes or samples.
+
+
+## miRcore R camp week 2 day 1
+
+## let's review
+
+### read smalldata
+```{r}
+dir()
+smalldata <- read.table("small_data.txt", header=T, row.names=1, stringsAsFactors=F)
+str(smalldata)
+```
+
+Goal: Create a heatmap for the 10 Tumor and 10 Control samples in myData
+
+First we need to install an R package to make these pretty plots!
+```{r}
+install.packages('pheatmap')
+```
+After installing any package, we must load the library of that package once during your R session
+```{r}
+library(pheatmap)
+```
+If you are not able to install pheatmap, you can use heatmap2() instead.
+```{r}
+?pheatmap
+```
+
+For a heatmap, data input needs to be a numeric matrix.
+Lets check that the data is a numeric matrix:
+```{r}
+is.matrix(smalldata)
+```
+Lets convert our data into a numeric matrix
+
+### select specific rows or columns
+### have a matrix form of smalldata
+```{r}
+smalldata_heatmap <- as.matrix(smalldata)
+str(smalldata_heatmap)
+is.matrix(smalldata_heatmap)
+```
+We can log transform the data. Why do we have the +1?
+```{r}
+smalldata_heatmap = log(smalldata_heatmap+1)
+```
+
+Lets make a small smalldata to work with- Select rows with just miRa, miR_c and miR_k
+```{r}
+m_smalldata_heatmap <- smalldata_heatmap[c(1, 3, 11),]
+m_smalldata_heatmap
+```
+
+# make pheatmap
+Lets use  the pheatmap() function to create a heatmap figure for our small sample dat
+```{r}
+pheatmap(m_smalldata_heatmap, scale="row", cluster_cols=F, border_color=NA,
+         main="Heatmap of Sample Data")
+
+```
+
+Group discussion:
+
+Which two miRs are clustered closely? miR_a and miR_c are clustered together
+Is this related to the correlation values? Yes, the correlation value for both is roughly 7.388.
+
+Lets look at the correllation of miR_a and miR_c
+define vectors
+
+```{r}
+cor(
+  m_smalldata_heatmap[1,], m_smalldata_heatmap[2,])
+```
+
+# make a scatter plot
+```{r}
+plot(
+  m_smalldata_heatmap[1,], m_smalldata_heatmap[2,],
+  xlab="miR_a", ylab="miR_c", col="purple"
+)
+```
+
+What do you think the correllation will be here? 
+Lets check!
+
+```{r}
+
+```
+What about miR_a and miR_k?
+
+```{r}
+cor(
+  m_smalldata_heatmap[1,], m_smalldata_heatmap[3,])
+```
+
+Now lets try to cluster both rows and columns: check ?pheatmap() for more information
+
+```{r}
+pheatmap(m_smalldata_heatmap, scale="row", border_color=NA, main="Heatmap of Sample Data")
+
+#lets make it look pretty!
+pheatmap(smalldata_heatmap, scale="row", cellwidth=15, cellheight=10,
+         color=colorRampPalette(c("blue","orange","white"))(256),
+         border_color="pink", main="Heatmap of Sample Data")
+
+```
+
+Group time: Everyone share your screen in turn and show your heatmap! 
+Do not worry if you are having trouble- your group leaders can help :)
+
+advanced task: add classes of samples (Tumor vs Control) in the heatmap? Search!
+
+```{r}
+pheatmap(smalldata_heatmap, scale="row", cellwidth=15, cellheight=10,
+         color=colorRampPalette(c("blue","orange","white"))(256),
+         border_color="pink", main="Heatmap of Sample Data", )
+```
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

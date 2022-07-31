@@ -1,0 +1,23 @@
+---
+title: "programming"
+author: "Leonardo de Farias"
+date: "2022-07-26"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### for loops
+#### syntax: for (identifier in seq):
+
+``` {r}
+
+```
+
+
+
+
+
+

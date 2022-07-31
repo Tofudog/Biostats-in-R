@@ -1,0 +1,55 @@
+---
+title: "ds_basics"
+author: "Leonardo de Farias"
+date: "2022-07-25"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##vectors
+```{r}
+#first, you can use c() and pass in values of the same data type
+temperature <- c(21.1, 23.4, 34.3, 31.2, 30.1, 28.9, 26.0, 22.2)
+city <- c("Dallas", "Amarillo", "Lubbock", "Midland",
+          "Houston", "San Antonio", "El Paso", "Austin")
+isHot <- c(TRUE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE)
+```
+
+
+##creating a dataframe
+``` {r}
+#just calling my data frame texas
+texas <- data.frame(temperature, city, isHot)
+head(texas, 4)
+```
+
+``` {r}
+print(paste("data type of temperatue:", typeof(texas$temperature)))
+print(paste("data type of city:", typeof(texas$city)))
+print(paste("data type of isHot:", typeof(texas$isHot)))
+```
+
+
+``` {r}
+#accessing rows
+print(texas[1:3,])
+
+#deleting a column
+texas <- subset (texas, select = -c(isHot))
+print(head(texas, 4))  #with isHot deleted
+
+#adding a new column
+hot <- (texas$temperature > 27.5)
+texas$isHot <- hot
+print(head(texas, 4))
+```
+
+
+
+
+
+
+
